@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>concierge</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="header-title">concierge</div>
+            <div id="connection-status" class="status-dot disconnected"></div>
+        </header>
+        <main id="messages"></main>
+        <footer>
+            <div id="typing-indicator" class="hidden">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <form id="input-form">
+                <textarea id="input" placeholder="Message..." rows="1"></textarea>
+                <button type="submit" id="send-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+                </button>
+            </form>
+        </footer>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>
