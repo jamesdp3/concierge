@@ -118,16 +118,41 @@ function addTaskList(tasks, header) {
     messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
+async function toggleTaskState(taskId, currentState, pill) {
+    const newState = currentState === "DONE" ? "TODO" : "DONE";
+    try {
+        const res = await fetch(`/api/tasks/${taskId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ state: newState }),
+        });
+        if (res.ok && pill) {
+            pill.textContent = newState;
+            pill.style.background = STATE_COLORS[newState] || "#5e81ac";
+            pill.title = newState === "DONE" ? "Mark as TODO" : "Mark as DONE";
+            pill._state = newState;
+        }
+    } catch (e) {
+        console.error("Failed to update task:", e);
+    }
+}
+
 function renderTaskCard(t) {
     const card = document.createElement("div");
     card.className = "task-card";
 
-    // State pill
-    const state = t.state || "TODO";
-    const pill = document.createElement("span");
-    pill.className = "task-state";
+    // Clickable state pill
+    const state = t.todo || "TODO";
+    const pill = document.createElement("button");
+    pill.className = "task-state task-state-btn";
     pill.textContent = state;
     pill.style.background = STATE_COLORS[state] || "#5e81ac";
+    pill.title = state === "DONE" ? "Mark as TODO" : "Mark as DONE";
+    pill._state = state;
+    pill.addEventListener("click", (e) => {
+        e.stopPropagation();
+        toggleTaskState(t.id, pill._state, pill);
+    });
     card.appendChild(pill);
 
     // Priority badge

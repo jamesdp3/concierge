@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>concierge — tasks</title>
+    <link rel="stylesheet" href="/static/style.css?v=2">
+</head>
+<body>
+    <div id="tasks-app">
+        <header>
+            <a href="/" class="nav-link">&larr; chat</a>
+            <div class="header-title">tasks</div>
+            <div id="task-count" class="header-count"></div>
+        </header>
+        <div class="filter-bar">
+            <div class="filter-group">
+                <span class="filter-label">State</span>
+                <button class="filter-pill active" data-filter="state" data-value="">All</button>
+                <button class="filter-pill" data-filter="state" data-value="TODO">TODO</button>
+                <button class="filter-pill" data-filter="state" data-value="NEXT">NEXT</button>
+                <button class="filter-pill" data-filter="state" data-value="WAITING">WAITING</button>
+                <button class="filter-pill" data-filter="state" data-value="DONE">DONE</button>
+                <button class="filter-pill" data-filter="state" data-value="CANCELLED">CANCELLED</button>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Priority</span>
+                <button class="filter-pill active" data-filter="priority" data-value="">All</button>
+                <button class="filter-pill" data-filter="priority" data-value="A">A</button>
+                <button class="filter-pill" data-filter="priority" data-value="B">B</button>
+                <button class="filter-pill" data-filter="priority" data-value="C">C</button>
+                <button class="filter-pill" data-filter="priority" data-value="D">D</button>
+            </div>
+        </div>
+        <main id="task-list"></main>
+    </div>
+    <script src="/static/tasks.js?v=5"></script>
+</body>
+</html>

@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>concierge</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v=2">
 </head>
 <body>
     <div id="app">
         <header>
             <div class="header-title">concierge</div>
-            <div id="connection-status" class="status-dot disconnected"></div>
+            <div style="display:flex;align-items:center;gap:8px">
+                <a href="/tasks" class="nav-link">tasks</a>
+                <div id="connection-status" class="status-dot disconnected"></div>
+            </div>
         </header>
         <main id="messages"></main>
         <footer>
@@ -25,6 +28,6 @@
             </form>
         </footer>
     </div>
-    <script src="/static/app.js"></script>
+    <script src="/static/app.js?v=2"></script>
 </body>
 </html>
