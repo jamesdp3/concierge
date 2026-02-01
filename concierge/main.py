@@ -58,9 +58,17 @@ async def lifespan(app: FastAPI):
     app.state.task_cache = None
     app.state.task_cache_time = 0
     app.state.task_cache_lock = asyncio.Lock()
+    app.state.write_queue = asyncio.Queue()
+
+    writer_task = asyncio.create_task(_write_worker())
 
     yield
 
+    writer_task.cancel()
+    try:
+        await writer_task
+    except asyncio.CancelledError:
+        pass
     if sc:
         await sc.close()
 
@@ -110,6 +118,24 @@ def _invalidate_cache():
     app.state.task_cache_time = 0
 
 
+async def _write_worker():
+    """Process spacecadet writes sequentially in the background."""
+    while True:
+        tool_name, kwargs = await app.state.write_queue.get()
+        try:
+            sc = app.state.spacecadet_client
+            if sc:
+                result = await sc.call_tool(tool_name, kwargs)
+                if isinstance(result, dict) and "error" in result:
+                    logger.error("Background write %s failed: %s", tool_name, result)
+                _invalidate_cache()
+        except Exception as e:
+            logger.error("Background write %s error: %s", tool_name, e)
+            _invalidate_cache()
+        finally:
+            app.state.write_queue.task_done()
+
+
 @app.get("/api/tasks")
 async def api_tasks(state: str | None = None, priority: str | None = None):
     tasks = await _get_tasks()
@@ -133,12 +159,9 @@ async def api_update_task(task_id: str, request: Request):
             if t.get("id") == task_id:
                 t["todo"] = new_state
                 break
-    result = await sc.update_task(id=task_id, new_state=new_state)
-    if isinstance(result, dict) and "error" in result:
-        _invalidate_cache()
-        return JSONResponse(result, status_code=500)
-    _invalidate_cache()
-    return result
+    # Enqueue the slow spacecadet write and return immediately
+    app.state.write_queue.put_nowait(("update_task", {"id": task_id, "new_state": new_state}))
+    return {"status": "ok", "queued": True}
 
 
 @app.websocket("/ws")
