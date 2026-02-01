@@ -13,6 +13,7 @@ from .classifier import Classifier
 from .config import settings
 from .llm.anthropic_provider import AnthropicProvider
 from .llm.ollama_provider import OllamaProvider
+from .llm.openai_provider import OpenAIProvider
 from .reconciler import Reconciler
 from .spacecadet_client import SpacecadetClient
 from .websocket_handler import websocket_endpoint
@@ -23,6 +24,8 @@ STATIC_DIR = Path(__file__).parent.parent / "static"
 
 
 def _build_provider():
+    if settings.llm_provider == "openai":
+        return OpenAIProvider()
     if settings.llm_provider == "ollama":
         return OllamaProvider()
     return AnthropicProvider()

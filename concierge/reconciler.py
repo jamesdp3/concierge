@@ -40,6 +40,8 @@ class Reconciler:
                 return await self._status_query(intent)
             case IntentType.GENERAL_NOTE:
                 return await self._new_task(intent)
+            case IntentType.CHAT:
+                return {"chat": intent.note or intent.raw_text}
             case IntentType.CLARIFICATION:
                 return {"clarification": intent.note or intent.raw_text}
             case _:
@@ -101,7 +103,7 @@ class Reconciler:
 
         # Search existing tasks by heading
         result = await self._client.list_tasks()
-        tasks = result.get("tasks", [])
+        tasks = result if isinstance(result, list) else result.get("tasks", [])
 
         query = intent.heading.lower()
         matches = [

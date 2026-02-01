@@ -183,6 +183,75 @@ footer {
     opacity: 0.9;
 }
 
+/* Task list */
+.task-list-msg {
+    max-width: 90%;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.task-list-header {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.task-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.task-card:last-child {
+    margin-bottom: 0;
+}
+
+.task-state {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.task-priority {
+    font-size: 11px;
+    font-weight: 700;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.task-heading {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.task-meta {
+    width: 100%;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-left: 2px;
+}
+
 /* Scrollbar */
 main::-webkit-scrollbar {
     width: 6px;

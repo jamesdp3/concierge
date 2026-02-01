@@ -34,6 +34,7 @@ class IntentType(str, Enum):
     CLARIFICATION = "clarification"
     GENERAL_NOTE = "general_note"
     STATUS_QUERY = "status_query"
+    CHAT = "chat"
 
 
 class IntentClassification(BaseModel):
@@ -85,6 +86,13 @@ def ws_response(text: str) -> WSOutgoing:
     return WSOutgoing(
         type="response",
         data={"text": text, "timestamp": datetime.now(UTC).isoformat()},
+    )
+
+
+def ws_task_list(tasks: list[dict], header: str = "") -> WSOutgoing:
+    return WSOutgoing(
+        type="task_list",
+        data={"tasks": tasks, "header": header, "timestamp": datetime.now(UTC).isoformat()},
     )
 
 
